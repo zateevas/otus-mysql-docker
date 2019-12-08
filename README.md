@@ -60,7 +60,7 @@ Threads fairness:
 
 
 
-##Оптимизированные настройки
+## Оптимизированные настройки
 
 
 sysbench --num-threads=8 --max-requests=2000 --mysql-user=root --mysql-password=12345 --mysql-host=127.0.0.1 --mysql-port=3309 --db-driver=mysql --mysql-db=otus oltp_read_write run
