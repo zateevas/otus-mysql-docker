@@ -11,12 +11,14 @@
 `mysql -u root -p12345 --port=3309 --protocol=tcp otus`
 
 
-#Ниже результаты выполнения sysbench
+# Ниже результаты выполнения sysbench
 
 
-##Дефолтные настройки
+## Дефолтные настройки
 
 sysbench --num-threads=8 --max-requests=2000 --mysql-user=root --mysql-password=12345 --mysql-host=127.0.0.1 --mysql-port=3309 --db-driver=mysql --mysql-db=otus oltp_read_write run
+
+
 WARNING: --num-threads is deprecated, use --threads instead
 WARNING: --max-requests is deprecated, use --events instead
 sysbench 1.0.11 (using system LuaJIT 2.1.0-beta3)
@@ -59,6 +61,8 @@ Threads fairness:
 
 
 ##Оптимизированные настройки
+
+
 sysbench --num-threads=8 --max-requests=2000 --mysql-user=root --mysql-password=12345 --mysql-host=127.0.0.1 --mysql-port=3309 --db-driver=mysql --mysql-db=otus oltp_read_write run
 WARNING: --num-threads is deprecated, use --threads instead
 WARNING: --max-requests is deprecated, use --events instead
