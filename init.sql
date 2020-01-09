@@ -1,5 +1,8 @@
-CREATE database IF NOT EXISTS otus;
-USE otus;
+-- MySQL dump 10.13  Distrib 8.0.18, for Linux (x86_64)
+--
+-- Host: localhost    Database: otus
+-- ------------------------------------------------------
+-- Server version	8.0.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -15,6 +18,8 @@ USE otus;
 --
 -- Table structure for table `addresses`
 --
+create database otus;
+use otus;
 
 DROP TABLE IF EXISTS `addresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -42,82 +47,6 @@ CREATE TABLE `addresses` (
 LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `categories`
---
-
-DROP TABLE IF EXISTS `categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `categories_name_IDX` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categories`
---
-
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `categories_characteristics_templates`
---
-
-DROP TABLE IF EXISTS `categories_characteristics_templates`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories_characteristics_templates` (
-  `category_id` int(10) unsigned NOT NULL,
-  `characteristic_id` int(10) unsigned NOT NULL,
-  KEY `categories_characteristics_templates_FK` (`category_id`),
-  KEY `categories_characteristics_templates_FK_1` (`characteristic_id`),
-  CONSTRAINT `categories_characteristics_templates_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
-  CONSTRAINT `categories_characteristics_templates_FK_1` FOREIGN KEY (`characteristic_id`) REFERENCES `characteristics` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categories_characteristics_templates`
---
-
-LOCK TABLES `categories_characteristics_templates` WRITE;
-/*!40000 ALTER TABLE `categories_characteristics_templates` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categories_characteristics_templates` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `characteristics`
---
-
-DROP TABLE IF EXISTS `characteristics`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `characteristics` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `unit` varchar(100) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `characteristics_active_IDX` (`active`,`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `characteristics`
---
-
-LOCK TABLES `characteristics` WRITE;
-/*!40000 ALTER TABLE `characteristics` DISABLE KEYS */;
-/*!40000 ALTER TABLE `characteristics` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -180,7 +109,7 @@ DROP TABLE IF EXISTS `currencies`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `currencies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf16_latvian_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf16 COLLATE utf16_latvian_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_latvian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -266,11 +195,11 @@ CREATE TABLE `orders` (
   `close_time` datetime DEFAULT NULL,
   `status` int(10) unsigned DEFAULT NULL,
   `address_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`order_id`),
   KEY `orders_status_IDX` (`status`) USING BTREE,
-  KEY `orders_FK` (`address_id`),
-  CONSTRAINT `orders_FK` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`address_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `orders_FK` (`address_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+/*!50100 PARTITION BY KEY (address_id)
+PARTITIONS 5 */;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,8 +224,7 @@ CREATE TABLE `orders_offers` (
   `offer_id` bigint(20) unsigned NOT NULL,
   KEY `orders_products_FK` (`offer_id`),
   KEY `orders_products_FK_1` (`order_id`),
-  CONSTRAINT `orders_products_FK` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`offer_id`),
-  CONSTRAINT `orders_products_FK_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+  CONSTRAINT `orders_products_FK` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`offer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -307,30 +235,6 @@ CREATE TABLE `orders_offers` (
 LOCK TABLES `orders_offers` WRITE;
 /*!40000 ALTER TABLE `orders_offers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `orders_offers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `permissible_values`
---
-
-DROP TABLE IF EXISTS `permissible_values`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `permissible_values` (
-  `characteristic_id` int(10) unsigned NOT NULL,
-  `value` varchar(100) NOT NULL,
-  KEY `permissible_values_FK` (`characteristic_id`),
-  CONSTRAINT `permissible_values_FK` FOREIGN KEY (`characteristic_id`) REFERENCES `characteristics` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `permissible_values`
---
-
-LOCK TABLES `permissible_values` WRITE;
-/*!40000 ALTER TABLE `permissible_values` DISABLE KEYS */;
-/*!40000 ALTER TABLE `permissible_values` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -370,6 +274,7 @@ CREATE TABLE `products` (
   `manufacturer_id` int(10) unsigned NOT NULL,
   `provider_id` int(10) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `characteristics` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `products_FK` (`category_id`),
   KEY `products_name_IDX` (`name`) USING BTREE,
@@ -388,33 +293,6 @@ CREATE TABLE `products` (
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `products_characteristics`
---
-
-DROP TABLE IF EXISTS `products_characteristics`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `products_characteristics` (
-  `product_id` int(10) unsigned NOT NULL,
-  `characteristic_id` int(10) unsigned NOT NULL,
-  `value` varchar(100) DEFAULT NULL,
-  KEY `products_characteristics_FK` (`product_id`),
-  KEY `products_characteristics_FK_1` (`characteristic_id`),
-  CONSTRAINT `products_characteristics_FK` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
-  CONSTRAINT `products_characteristics_FK_1` FOREIGN KEY (`characteristic_id`) REFERENCES `characteristics` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `products_characteristics`
---
-
-LOCK TABLES `products_characteristics` WRITE;
-/*!40000 ALTER TABLE `products_characteristics` DISABLE KEYS */;
-/*!40000 ALTER TABLE `products_characteristics` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -532,3 +410,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2020-01-09 17:56:50
