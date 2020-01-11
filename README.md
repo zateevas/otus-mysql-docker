@@ -6,10 +6,12 @@
    JOIN streets ON streets.id=addresses.street_id
    JOIN cities ON cities.id=streets.city_id
    JOIN regions On regions.id=cities.region_id
-   JOIN countries On countries.id=regions.country_id; - Получаем полную информацию по адресам и людям, которые указали адрес
+   JOIN countries On countries.id=regions.country_id; - **Получаем полную информацию по адресам и людям, которые указали адрес
+**
+
 
    Пример вывода:
- +--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
+
 | user_uuid                            | title | first_name | last_name | correspondence_language | marital_status | birth_date | gender | postal_code | country | region          | city           | street     | building_number | apartment |
 +--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
 | 8ed9e006-346a-11ea-9545-0242c0a84002 | mr    | Anton      | Pavlov    | en                      | single         | 1994-05-10 | man    | 2000        | England | Greater London  | London         | Baker st.  | 40              |        15 |
@@ -19,7 +21,7 @@
 +--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
 
 2) select offers.offer_id from offers 
-LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id IS NULL; - Узнаем по каким предложениям не было ни одного заказа.  
+LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id IS NULL; - **Узнаем по каким предложениям не было ни одного заказа. ** 
 
    Пример вывода: 
     +----------+
@@ -41,7 +43,7 @@ LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id
 3) select product_id, offer_id, prices.name as price_type, price_value, currencies.name as currency from offers
    JOIN currencies On currencies.id=offers.currency_id
    JOIN prices On prices.id=offers.price_id
-   where product_id=37 and active=1 and end_time > NOW(); - Узнать все активные предложения по конкретному товару
+   where product_id=37 and active=1 and end_time > NOW(); - **Узнать все активные предложения по конкретному товару**
    
    Вывод:
 
@@ -58,7 +60,7 @@ LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id
    JOIN streets ON streets.id=addresses.street_id
    JOIN cities ON cities.id=streets.city_id
    JOIN regions On regions.id=cities.region_id
-   JOIN countries On countries.id=regions.country_id WHERE user_uuid='8ed9e006-346a-11ea-9545-0242c0a84002' - Получить все адреса конкретного пользователя.
+   JOIN countries On countries.id=regions.country_id WHERE user_uuid='8ed9e006-346a-11ea-9545-0242c0a84002' -** Получить все адреса конкретного пользователя.**
    
    Вывод:
    +--------------------------------------+-------------+---------+----------------+--------+-----------+-----------------+-----------+
@@ -72,7 +74,7 @@ LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id
    JOIN streets ON streets.id=addresses.street_id
    JOIN cities ON cities.id=streets.city_id
    JOIN regions On regions.id=cities.region_id
-   JOIN countries On countries.id=regions.country_id where order_id=1; - Узнаем по какому адресу нужно доставить конкретный заказ
+   JOIN countries On countries.id=regions.country_id where order_id=1; - **Узнаем по какому адресу нужно доставить конкретный заказ**
    
    Вывод:
    +----------+-------------+---------+------------+----------------+------------+-----------------+-----------+
@@ -83,7 +85,7 @@ LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id
 
    select order_id, create_time, close_time, status FROM users 
    JOIN addresses On addresses.user_uuid=users.uuid
-   JOIN orders On orders.address_id=addresses.address_id WHERE uuid='2f6d7c57-346a-11ea-9545-0242c0a84002'; - узнать все заказы конкретного пользователя по всем адресам
+   JOIN orders On orders.address_id=addresses.address_id WHERE uuid='2f6d7c57-346a-11ea-9545-0242c0a84002'; - **узнать все заказы конкретного пользователя по всем адресам**
 
    Вывод:
    +----------+---------------------+---------------------+--------+
@@ -94,7 +96,7 @@ LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id
 
    SELECT products.id, products.name as product_name, manufacturers.name as manufacturers_name FROM products 
    JOIN manufacturers On products.manufacturer_id=manufacturers.id 
-   where JSON_EXTRACT(product_characteristics,"$.category")="Home video game console" ; - показать все продукты категории "Home video game console"
+   where JSON_EXTRACT(product_characteristics,"$.category")="Home video game console" ; - **показать все продукты категории "Home video game console"**
 
    Вывод:
    +----+--------------+--------------------+
