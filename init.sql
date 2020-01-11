@@ -20,7 +20,6 @@
 --
 create database otus;
 use otus;
-
 DROP TABLE IF EXISTS `addresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -37,7 +36,7 @@ CREATE TABLE `addresses` (
   KEY `addresses_FK` (`user_uuid`),
   CONSTRAINT `addresses_FK` FOREIGN KEY (`user_uuid`) REFERENCES `users` (`uuid`),
   CONSTRAINT `addresses_FK_1` FOREIGN KEY (`street_id`) REFERENCES `streets` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +45,7 @@ CREATE TABLE `addresses` (
 
 LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (1,'2f6d7c57-346a-11ea-9545-0242c0a84002',2,'10',12,'1000'),(2,'45ea8083-346a-11ea-9545-0242c0a84002',1,'20',13,'1100'),(3,'8ed9dd6a-346a-11ea-9545-0242c0a84002',3,'30',14,'1200'),(4,'8ed9e006-346a-11ea-9545-0242c0a84002',4,'40',15,'2000');
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `cities` (
   KEY `cities_FK` (`region_id`),
   KEY `cities_name_IDX` (`name`) USING BTREE,
   CONSTRAINT `cities_FK` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +73,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+INSERT INTO `cities` VALUES (1,'Moscow',1),(2,'Solnechnogorsk',1),(3,'Smolensk',2),(4,'London',3);
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +89,7 @@ CREATE TABLE `countries` (
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `countries_name_IDX` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +98,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
+INSERT INTO `countries` VALUES (2,'England'),(1,'Russia');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +113,7 @@ CREATE TABLE `currencies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf16 COLLATE utf16_latvian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_latvian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_latvian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +122,7 @@ CREATE TABLE `currencies` (
 
 LOCK TABLES `currencies` WRITE;
 /*!40000 ALTER TABLE `currencies` DISABLE KEYS */;
+INSERT INTO `currencies` VALUES (1,'RUB'),(2,'GBP');
 /*!40000 ALTER TABLE `currencies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +137,7 @@ CREATE TABLE `manufacturers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,6 +146,7 @@ CREATE TABLE `manufacturers` (
 
 LOCK TABLES `manufacturers` WRITE;
 /*!40000 ALTER TABLE `manufacturers` DISABLE KEYS */;
+INSERT INTO `manufacturers` VALUES (1,'Sony'),(2,'Microsoft'),(3,'Atari');
 /*!40000 ALTER TABLE `manufacturers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +174,7 @@ CREATE TABLE `offers` (
   CONSTRAINT `offers_FK` FOREIGN KEY (`currency_id`) REFERENCES `currencies` (`id`),
   CONSTRAINT `products_prices_FK` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   CONSTRAINT `products_prices_FK_1` FOREIGN KEY (`price_id`) REFERENCES `prices` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,6 +183,7 @@ CREATE TABLE `offers` (
 
 LOCK TABLES `offers` WRITE;
 /*!40000 ALTER TABLE `offers` DISABLE KEYS */;
+INSERT INTO `offers` VALUES (52,37,1,10000,1,1,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(53,37,2,8000,1,1,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(54,37,3,120,1,2,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(55,37,4,90,1,2,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(56,38,1,2000,1,1,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(57,38,3,20,1,2,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(58,39,1,20000,1,1,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(59,39,2,16000,1,1,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(60,39,3,240,1,2,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(61,39,4,180,1,2,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(62,40,1,4000,1,1,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(63,40,3,40,1,2,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(64,41,1,11000,1,1,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(65,41,2,9000,1,1,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(66,41,3,140,1,2,'2018-11-01 00:00:00','2022-11-01 00:00:00'),(67,41,4,100,1,2,'2019-11-01 00:00:00','2019-12-01 00:00:00'),(68,42,3,1000,1,2,'2008-11-01 00:00:00','2010-11-01 00:00:00');
 /*!40000 ALTER TABLE `offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,14 +195,15 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `order_id` bigint(20) unsigned NOT NULL,
+  `order_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `create_time` datetime NOT NULL,
   `close_time` datetime DEFAULT NULL,
   `status` int(10) unsigned DEFAULT NULL,
-  `address_id` int(10) unsigned DEFAULT NULL,
+  `address_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`order_id`,`address_id`),
   KEY `orders_status_IDX` (`status`) USING BTREE,
   KEY `orders_FK` (`address_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 /*!50100 PARTITION BY KEY (address_id)
 PARTITIONS 5 */;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -208,6 +214,7 @@ PARTITIONS 5 */;
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (2,'2019-11-03 00:00:00','2019-11-14 00:00:00',5,2),(4,'2019-12-28 00:00:00',NULL,4,4),(1,'2019-11-02 00:00:00','2019-11-15 00:00:00',5,1),(3,'2019-12-31 00:00:00',NULL,4,3);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,6 +241,7 @@ CREATE TABLE `orders_offers` (
 
 LOCK TABLES `orders_offers` WRITE;
 /*!40000 ALTER TABLE `orders_offers` DISABLE KEYS */;
+INSERT INTO `orders_offers` VALUES (1,1,53),(1,2,56),(2,1,59),(2,2,62),(3,1,52),(4,1,54);
 /*!40000 ALTER TABLE `orders_offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +256,7 @@ CREATE TABLE `prices` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,6 +265,7 @@ CREATE TABLE `prices` (
 
 LOCK TABLES `prices` WRITE;
 /*!40000 ALTER TABLE `prices` DISABLE KEYS */;
+INSERT INTO `prices` VALUES (1,'regular_ru'),(2,'black_friday_2019_ru'),(3,'regular_en'),(4,'black_friday_2019_en');
 /*!40000 ALTER TABLE `prices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,20 +279,18 @@ DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `category_id` int(10) unsigned DEFAULT NULL,
   `manufacturer_id` int(10) unsigned NOT NULL,
   `provider_id` int(10) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
-  `characteristics` json DEFAULT NULL,
+  `product_characteristics` json DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `products_FK` (`category_id`),
   KEY `products_name_IDX` (`name`) USING BTREE,
   KEY `products_name_active_IDX` (`name`,`active`) USING BTREE,
   KEY `products_FK_2` (`provider_id`),
-  CONSTRAINT `products_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
-  CONSTRAINT `products_FK_1` FOREIGN KEY (`id`) REFERENCES `manufacturers` (`id`),
+  KEY `products_FK_1` (`manufacturer_id`),
+  CONSTRAINT `products_FK_1` FOREIGN KEY (`manufacturer_id`) REFERENCES `manufacturers` (`id`),
   CONSTRAINT `products_FK_2` FOREIGN KEY (`provider_id`) REFERENCES `providers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,6 +299,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (37,'playstation3',1,1,1,'{\"weight\": {\"size\": 2, \"unit\": \"kg\"}, \"category\": \"Home video game console\"}'),(38,'playstation3 joystick',1,1,1,'{\"weight\": {\"size\": 0.5, \"unit\": \"kg\"}, \"category\": \"Joystick\", \"platform\": \"playstation3\"}'),(39,'playstation4',1,1,1,'{\"weight\": {\"size\": 2, \"unit\": \"kg\"}, \"category\": \"Home video game console\"}'),(40,'playstation4 joystick',1,1,1,'{\"weight\": {\"size\": 0.5, \"unit\": \"kg\"}, \"category\": \"Joystick\", \"platform\": \"playstation4\"}'),(41,'xbox360',2,1,1,'{\"weight\": {\"size\": 3, \"unit\": \"kg\"}, \"category\": \"Home video game console\"}'),(42,'Atari 2600',3,2,0,'{\"weight\": {\"size\": 1, \"unit\": \"kg\"}, \"category\": \"Home video game console\"}');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +314,7 @@ CREATE TABLE `providers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +323,7 @@ CREATE TABLE `providers` (
 
 LOCK TABLES `providers` WRITE;
 /*!40000 ALTER TABLE `providers` DISABLE KEYS */;
+INSERT INTO `providers` VALUES (1,'ASDF'),(2,'MVBN');
 /*!40000 ALTER TABLE `providers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +342,7 @@ CREATE TABLE `regions` (
   KEY `regions_FK` (`country_id`),
   KEY `regions_name_IDX` (`name`) USING BTREE,
   CONSTRAINT `regions_FK` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,6 +351,7 @@ CREATE TABLE `regions` (
 
 LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
+INSERT INTO `regions` VALUES (1,'Moscow obl',1),(2,'Smolenskaya obl',1),(3,'Greater London',2);
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,7 +370,7 @@ CREATE TABLE `streets` (
   KEY `streets_FK` (`city_id`),
   KEY `streets_name_IDX` (`name`) USING BTREE,
   CONSTRAINT `streets_FK` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,6 +379,7 @@ CREATE TABLE `streets` (
 
 LOCK TABLES `streets` WRITE;
 /*!40000 ALTER TABLE `streets` DISABLE KEYS */;
+INSERT INTO `streets` VALUES (1,'Lenina st.',1),(2,'Lenina st.',2),(3,'Lenina st.',3),(4,'Baker st.',4);
 /*!40000 ALTER TABLE `streets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,6 +409,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('2f6d7c57-346a-11ea-9545-0242c0a84002','Alex','Zateev','ru','single','man','mr','1996-09-12'),('45ea8083-346a-11ea-9545-0242c0a84002','Ivan','Ivanov','ru','single','man','mr','1999-10-12'),('8ed9dd6a-346a-11ea-9545-0242c0a84002','Petr','Petrov','ru','single','man','mr','1995-08-12'),('8ed9e006-346a-11ea-9545-0242c0a84002','Anton','Pavlov','en','single','man','mr','1994-05-10');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -410,4 +422,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-09 17:56:50
+-- Dump completed on 2020-01-11 16:33:37

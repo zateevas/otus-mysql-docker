@@ -1,3 +1,114 @@
+# Задание 10
+
+1) select user_uuid,title, first_name, last_name, correspondence_language, marital_status,  birth_date, gender, postal_code, countries.name as country, regions.name as region, cities.name as city, streets.name as street, building_number, apartment   
+   FROM addresses 
+   JOIN users ON users.uuid=addresses.user_uuid 
+   JOIN streets ON streets.id=addresses.street_id
+   JOIN cities ON cities.id=streets.city_id
+   JOIN regions On regions.id=cities.region_id
+   JOIN countries On countries.id=regions.country_id; - Получаем полную информацию по адресам и людям, которые указали адрес
+
+   Пример вывода:
+ +--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
+| user_uuid                            | title | first_name | last_name | correspondence_language | marital_status | birth_date | gender | postal_code | country | region          | city           | street     | building_number | apartment |
++--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
+| 8ed9e006-346a-11ea-9545-0242c0a84002 | mr    | Anton      | Pavlov    | en                      | single         | 1994-05-10 | man    | 2000        | England | Greater London  | London         | Baker st.  | 40              |        15 |
+| 45ea8083-346a-11ea-9545-0242c0a84002 | mr    | Ivan       | Ivanov    | ru                      | single         | 1999-10-12 | man    | 1100        | Russia  | Moscow obl      | Moscow         | Lenina st. | 20              |        13 |
+| 2f6d7c57-346a-11ea-9545-0242c0a84002 | mr    | Alex       | Zateev    | ru                      | single         | 1996-09-12 | man    | 1000        | Russia  | Moscow obl      | Solnechnogorsk | Lenina st. | 10              |        12 |
+| 8ed9dd6a-346a-11ea-9545-0242c0a84002 | mr    | Petr       | Petrov    | ru                      | single         | 1995-08-12 | man    | 1200        | Russia  | Smolenskaya obl | Smolensk       | Lenina st. | 30              |        14 |
++--------------------------------------+-------+------------+-----------+-------------------------+----------------+------------+--------+-------------+---------+-----------------+----------------+------------+-----------------+-----------+
+
+2) select offers.offer_id from offers 
+LEFT JOIN orders_offers ON offers.offer_id=orders_offers.offer_id WHERE order_id IS NULL; - Узнаем по каким предложениям не было ни одного заказа.  
+
+   Пример вывода: 
+    +----------+
+    | offer_id |
+    +----------+
+    |       58 |
+    |       64 |
+    |       65 |
+    |       57 |
+    |       60 |
+    |       63 |
+    |       66 |
+    |       68 |
+    |       55 |
+    |       61 |
+    |       67 |
+    +----------+
+
+3) select product_id, offer_id, prices.name as price_type, price_value, currencies.name as currency from offers
+   JOIN currencies On currencies.id=offers.currency_id
+   JOIN prices On prices.id=offers.price_id
+   where product_id=37 and active=1 and end_time > NOW(); - Узнать все активные предложения по конкретному товару
+   
+   Вывод:
+
+   +------------+----------+------------+-------------+----------+
+   | product_id | offer_id | price_type | price_value | currency |
+   +------------+----------+------------+-------------+----------+
+   |         37 |       52 | regular_ru |       10000 | RUB      |
+   |         37 |       54 | regular_en |         120 | GBP      |
+   +------------+----------+------------+-------------+----------+
+
+
+   select user_uuid, postal_code, countries.name as country, regions.name as region, cities.name as city, streets.name as street, building_number, apartment   
+   FROM addresses 
+   JOIN streets ON streets.id=addresses.street_id
+   JOIN cities ON cities.id=streets.city_id
+   JOIN regions On regions.id=cities.region_id
+   JOIN countries On countries.id=regions.country_id WHERE user_uuid='8ed9e006-346a-11ea-9545-0242c0a84002' - Получить все адреса конкретного пользователя.
+   
+   Вывод:
+   +--------------------------------------+-------------+---------+----------------+--------+-----------+-----------------+-----------+
+   | user_uuid                            | postal_code | country | region         | city   | street    | building_number | apartment |
+   +--------------------------------------+-------------+---------+----------------+--------+-----------+-----------------+-----------+
+   | 8ed9e006-346a-11ea-9545-0242c0a84002 | 2000        | England | Greater London | London | Baker st. | 40              |        15 |
+   +--------------------------------------+-------------+---------+----------------+--------+-----------+-----------------+-----------+
+
+   select order_id, postal_code, countries.name as country, regions.name as region, cities.name as city, streets.name as street, building_number, apartment from orders
+   JOIN addresses On orders.address_id=addresses.address_id
+   JOIN streets ON streets.id=addresses.street_id
+   JOIN cities ON cities.id=streets.city_id
+   JOIN regions On regions.id=cities.region_id
+   JOIN countries On countries.id=regions.country_id where order_id=1; - Узнаем по какому адресу нужно доставить конкретный заказ
+   
+   Вывод:
+   +----------+-------------+---------+------------+----------------+------------+-----------------+-----------+
+   | order_id | postal_code | country | region     | city           | street     | building_number | apartment |
+   +----------+-------------+---------+------------+----------------+------------+-----------------+-----------+
+   |        1 | 1000        | Russia  | Moscow obl | Solnechnogorsk | Lenina st. | 10              |        12 |
+   +----------+-------------+---------+------------+----------------+------------+-----------------+-----------+
+
+   select order_id, create_time, close_time, status FROM users 
+   JOIN addresses On addresses.user_uuid=users.uuid
+   JOIN orders On orders.address_id=addresses.address_id WHERE uuid='2f6d7c57-346a-11ea-9545-0242c0a84002'; - узнать все заказы конкретного пользователя по всем адресам
+
+   Вывод:
+   +----------+---------------------+---------------------+--------+
+   | order_id | create_time         | close_time          | status |
+   +----------+---------------------+---------------------+--------+
+   |        1 | 2019-11-02 00:00:00 | 2019-11-15 00:00:00 |      5 |
+   +----------+---------------------+---------------------+--------+
+
+   SELECT products.id, products.name as product_name, manufacturers.name as manufacturers_name FROM products 
+   JOIN manufacturers On products.manufacturer_id=manufacturers.id 
+   where JSON_EXTRACT(product_characteristics,"$.category")="Home video game console" ; - показать все продукты категории "Home video game console"
+
+   Вывод:
+   +----+--------------+--------------------+
+   | id | product_name | manufacturers_name |
+   +----+--------------+--------------------+
+   | 37 | playstation3 | Sony               |
+   | 39 | playstation4 | Sony               |
+   | 41 | xbox360      | Microsoft          |
+   | 42 | Atari 2600   | Atari              |
+   +----+--------------+--------------------+
+
+
+
+
 # Задание 9
 
 1) Сделал партиционирование таблицы orders методом key по ключу address_id. Таблицы orders, потому что в ней будет храниться гораздо больше информации, чем во всех остальных. Методом key, потому что мне нужно партиционирование по полю, где будет id, и мне кажется, что так будет наиболее равномерно размазываться информация. По полю address_id, потому что в моем случае address_id является уникальным идентификатором пользователя и таким образом все заказы пользователя будут попадать в одну партицию.
@@ -5,6 +116,14 @@
 2) Вроде с этим у меня все ок
 
 3) Добавил в таблицу products поле characteristics типа json и удалил все таблицы, которыми я делал характеристики ранее.
+   Пример добавления характеристик:
+   insert into products (name,manufacturer_id,provider_id,active,product_characteristics) values
+   ('playstation3',1,1,1,'{"category":"Home video game console","weight":{"size":2,"unit":"kg"}}'),
+   ('playstation3 joystick',1,1,1,'{"category":"Joystick","platform":"playstation3","weight":{"size":0.5,"unit":"kg"}}'),
+   ('playstation4',1,1,1,'{"category":"Home video game console","weight":{"size":2,"unit":"kg"}}'),
+   ('playstation4 joystick',1,1,1,'{"category":"Joystick","platform":"playstation4","weight":{"size":0.5,"unit":"kg"}}'),
+   ('xbox360',2,1,1,'{"category":"Home video game console","weight":{"size":3,"unit":"kg"}}'),
+   ('Atari 2600',3,2,0,'{"category":"Home video game console","weight":{"size":1,"unit":"kg"}}');
 
 # Задание 7
 
