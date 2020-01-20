@@ -23,12 +23,14 @@ END
 
 
 2) Пример LOAD DATA
+
   LOAD DATA INFILE '/tmp/Apparel.csv' INTO TABLE products.Apparel
   FIELDS TERMINATED BY ',' ENCLOSED BY '"'
   LINES TERMINATED BY '\n'
   IGNORE 1 LINES;
 
   Пример mysqlimport
+  
   mysqlimport --ignore-lines=1 --fields-terminated-by=, --fields-enclosed-by=\" --lines-terminated-by=\\n --verbose -u root -p12345 --local products /tmp/SnowDevil.csv
 
 # Задание 10
