@@ -1,3 +1,36 @@
+# Задание 11
+
+1) Процедура удаляет всю связанную с пользователем информацию
+
+CREATE PROCEDURE delete_all_user_data(IN userid varchar(64))
+
+BEGIN
+	START TRANSACTION;
+	SELECT GROUP_CONCAT(address_id) INTO @addressesid FROM addresses where user_uuid = userid ;
+    set @get_order_ids = CONCAT ("SELECT GROUP_CONCAT(order_id) INTO @orderid FROM orders WHERE address_id IN (",@addressesid,")");
+    PREPARE get_order_ids from @get_order_ids;
+    EXECUTE get_order_ids;
+    set @delete_from_orders_offers = CONCAT ("DELETE FROM orders_offers WHERE order_id in (",@orderid,")");
+    PREPARE delete_from_orders_offers from @delete_from_orders_offers;
+    set @delete_from_orders = CONCAT ("DELETE FROM orders WHERE address_id in (",@addressesid,")");
+    PREPARE delete_from_orders from @delete_from_orders;      
+    EXECUTE delete_from_orders_offers;   
+    EXECUTE delete_from_orders;
+    DELETE FROM addresses WHERE user_uuid = userid;
+    DELETE FROM users WHERE uuid = userid;   
+    COMMIT;
+END
+
+
+2) Пример LOAD DATA
+  LOAD DATA INFILE '/tmp/Apparel.csv' INTO TABLE products.Apparel
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+
+  Пример mysqlimport
+  mysqlimport --ignore-lines=1 --fields-terminated-by=, --fields-enclosed-by=\" --lines-terminated-by=\\n --verbose -u root -p12345 --local products /tmp/SnowDevil.csv
+
 # Задание 10
 
 1) select user_uuid,title, first_name, last_name, correspondence_language, marital_status,  birth_date, gender, postal_code, countries.name as country, regions.name as region, cities.name as city, streets.name as street, building_number, apartment   
