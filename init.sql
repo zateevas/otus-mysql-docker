@@ -220,6 +220,32 @@ INSERT INTO `orders` VALUES (2,'2019-11-03 00:00:00','2019-11-14 00:00:00',5,2),
 UNLOCK TABLES;
 
 --
+-- Temporary table structure for view `orders_all_statuses`
+--
+
+DROP TABLE IF EXISTS `orders_all_statuses`;
+/*!50001 DROP VIEW IF EXISTS `orders_all_statuses`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `orders_all_statuses` AS SELECT 
+ 1 AS `statuses`,
+ 1 AS `statuses_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `orders_count`
+--
+
+DROP TABLE IF EXISTS `orders_count`;
+/*!50001 DROP VIEW IF EXISTS `orders_count`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `orders_count` AS SELECT 
+ 1 AS `days_ago`,
+ 1 AS `orders_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `orders_offers`
 --
 
@@ -245,6 +271,19 @@ LOCK TABLES `orders_offers` WRITE;
 INSERT INTO `orders_offers` VALUES (2,1,59),(2,2,62),(3,1,52),(4,1,54);
 /*!40000 ALTER TABLE `orders_offers` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `orders_status_4`
+--
+
+DROP TABLE IF EXISTS `orders_status_4`;
+/*!50001 DROP VIEW IF EXISTS `orders_status_4`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `orders_status_4` AS SELECT 
+ 1 AS `status`,
+ 1 AS `status_count`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `prices`
@@ -413,6 +452,60 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES ('45ea8083-346a-11ea-9545-0242c0a84002','Ivan','Ivanov','ru','single','man','mr','1999-10-12'),('8ed9dd6a-346a-11ea-9545-0242c0a84002','Petr','Petrov','ru','single','man','mr','1995-08-12'),('8ed9e006-346a-11ea-9545-0242c0a84002','Anton','Pavlov','en','single','man','mr','1994-05-10');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `orders_all_statuses`
+--
+
+/*!50001 DROP VIEW IF EXISTS `orders_all_statuses`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `orders_all_statuses` AS select (case grouping(`orders`.`status`) when 1 then 'Summary' else `orders`.`status` end) AS `statuses`,count(0) AS `statuses_count` from `orders` group by `orders`.`status` with rollup */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `orders_count`
+--
+
+/*!50001 DROP VIEW IF EXISTS `orders_count`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `orders_count` AS select (case when (`orders`.`create_time` = now()) then 'today' when (`orders`.`create_time` = (now() + interval -(1) day)) then 'yesterday' when (`orders`.`create_time` < (now() + interval -(1) day)) then concat(timestampdiff(DAY,`orders`.`create_time`,now()),' days ago') end) AS `days_ago`,count(0) AS `orders_count` from `orders` group by `days_ago` order by `days_ago` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `orders_status_4`
+--
+
+/*!50001 DROP VIEW IF EXISTS `orders_status_4`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `orders_status_4` AS select `orders`.`status` AS `status`,count(0) AS `status_count` from `orders` group by `orders`.`status` having (`orders`.`status` = 4) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -423,7 +516,9 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-20 23:12:06
+-- Dump completed on 2020-01-26 18:44:10
+
+
 create database products;
 use products; -- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
 --

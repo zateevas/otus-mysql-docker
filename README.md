@@ -1,3 +1,39 @@
+# Задание 12
+
+1) Вывести количество заказов в определенные дни (CASE)
+
+CREATE
+OR REPLACE
+VIEW orders_count AS
+SELECT
+CASE 
+ WHEN  create_time  = NOW() then  "today"
+ WHEN  create_time  = (DATE_ADD(NOW(), INTERVAL -1 DAY)) then  "yesterday"
+ WHEN  create_time  < (DATE_ADD(NOW(), INTERVAL -1 DAY)) then CONCAT(TIMESTAMPDIFF(DAY,create_time,NOW()), " days ago")
+ END as days_ago,
+ COUNT(*) as orders_count
+FROM orders GROUP BY  days_ago ORDER BY days_ago;
+
+2)  Вывести количество заказов в статусе 4 (HAVING)
+
+CREATE
+OR REPLACE
+VIEW orders_status_4 AS
+SELECT status, COUNT(*) as status_count FROM orders GROUP BY status HAVING status=4;
+
+3) Вывести количество заказов во всех статусах и общее количество заказов. (GROUPING , ROLLUP)
+
+CREATE
+OR REPLACE
+VIEW orders_all_statuses AS
+SELECT
+CASE GROUPING(status)
+WHEN 1 then "Summary"
+ELSE status
+END as statuses, COUNT(*) as statuses_count FROM orders GROUP BY status WITH ROLLUP;
+
+
+
 # Задание 11
 
 1) Процедура удаляет всю связанную с пользователем информацию
